@@ -78,7 +78,7 @@ public class UpgradeImageTypeContent extends UpgradeProcess {
 
 				long folderId = getFolderId(userId, groupId, resourcePrimKey);
 
-				FileEntry fileEntry = getFileEntry(groupId, folderId, id);
+				FileEntry fileEntry = getFileEntry(groupId, folderId, id, true);
 
 				if (fileEntry == null) {
 					continue;
@@ -137,7 +137,8 @@ public class UpgradeImageTypeContent extends UpgradeProcess {
 						userId, groupId, resourcePrimKey);
 
 					FileEntry fileEntry = getFileEntry(
-						groupId, folderId, String.valueOf(articleImageId));
+						groupId, folderId, String.valueOf(articleImageId),
+						false);
 
 					if (fileEntry != null) {
 						continue;
@@ -163,7 +164,7 @@ public class UpgradeImageTypeContent extends UpgradeProcess {
 	}
 
 	protected FileEntry getFileEntry(
-		long groupId, long folderId, String fileName) {
+		long groupId, long folderId, String fileName, boolean showLog) {
 
 		FileEntry fileEntry = null;
 
@@ -172,10 +173,13 @@ public class UpgradeImageTypeContent extends UpgradeProcess {
 				groupId, folderId, fileName);
 		}
 		catch (PortalException pe) {
-			_log.error(
-				"Unable to get file entry with group ID " + groupId +
-					", folder ID " + folderId + ", and file name " + fileName,
-				pe);
+			if (showLog) {
+				_log.error(
+					"Unable to get file entry with group ID " + groupId +
+						", folder ID " + folderId + ", and file name " +
+							fileName,
+					pe);
+			}
 		}
 
 		return fileEntry;
